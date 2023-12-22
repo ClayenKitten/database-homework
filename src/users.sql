@@ -25,15 +25,15 @@ GRANT INSERT ON Transactions TO Cashier;
 GO
 
 -- Users
-CREATE USER RockefellerDI;
+CREATE USER RockefellerDI WITH PASSWORD = 'RockefellerPassword1234';
 ALTER ROLE Manager ADD MEMBER RockefellerDI;
 
 ALTER ROLE Cashier ADD MEMBER IvanovaAA;
 
-CREATE USER IvanovaAA;
+CREATE USER IvanovaAA WITH PASSWORD = 'IvanovaPassword1234';
 ALTER ROLE Cashier ADD MEMBER IvanovaAA;
 
-CREATE USER IvanovBA;
+CREATE USER IvanovBA WITH PASSWORD = 'IvanovPassword1234';
 ALTER ROLE WarehouseWorker ADD MEMBER IvanovBA;
 GO
 
