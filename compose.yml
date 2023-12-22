@@ -1,0 +1,24 @@
+services:
+  db:
+    build:
+      context: '.'
+      dockerfile: 'db/Dockerfile'
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SA_PASSWORD}
+    volumes:
+      - ./db-data:/var/opt/mssql
+    env_file:
+      - .env
+  setup:
+    build:
+      context: '.'
+      dockerfile: 'setup/Dockerfile'
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD}
+    depends_on:
+      - db
+    env_file:
+      - .env

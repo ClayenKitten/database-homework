@@ -1,0 +1,134 @@
+erDiagram
+  Products {
+    ProductId INT PK
+    CategoryId INT FK
+    ProductName NVARCHAR(255)
+    Price SMALLMONEY
+    Stored DECIMAL
+    EAN13 CHAR(13)
+  }
+
+  Categories {
+    CategoryId INT PK
+    DisplayName NVARCHAR(255)
+    AgeRestricted BIT
+    TimeRestricted BIT
+    MinimalPrice SMALLMONEY
+  }
+
+  Employees {
+    EmployeeId INT PK
+    FirstName NVARCHAR(64)
+    SecondName NVARCHAR(64)
+    Position NVARCHAR(64)
+    Salary MONEY
+  }
+
+  Customers {
+    CustomerId INT PK
+    FirstName NVARCHAR(64)
+    SecondName NVARCHAR(64)
+    Phone VARCHAR(32)
+    Email NVARCHAR(32)
+    RegisteredAt DATETIME2
+    DateOfBirth DATE
+    IsMinor BIT
+    IsSenior BIT
+  }
+
+  Discounts {
+    DiscountId INT PK
+    DiscountName NVARCHAR(255)
+    EndDate DATE
+    Everyone BIT
+    CardHolders BIT
+    Seniors BIT
+    Minors BIT
+    MinimalAmount DECIMAL
+    StartTime TIME
+    EndTime TIME
+  }
+
+  DiscountedProducts {
+    DiscountId INT PK, FK
+    ProductId INT PK, FK
+    AbsoluteDiscount SMALLMONEY
+    PercentDiscount DECIMAL
+  }
+
+
+  Shipments {
+    ShipmentId INT PK
+    OrganizationId INT FK
+    TransactionId INT FK
+    DocumentId INT
+    ShippedAt DATETIME2
+  }
+
+  ShipmentEntries {
+    ShipmentId INT PK, FK
+    ProductId INT PK, FK
+    Amount DECIMAL
+  }
+
+  Organizations {
+    OrganizationId INT PK
+    OrgName NVARCHAR(255)
+    Details TEXT
+  }
+
+  Transactions {
+    TransactionId INT PK
+    Total MONEY
+    ReceivedCash SMALLMONEY
+    Change SMALLMONEY
+    CardHash CHAR(128)
+  }
+
+  Sales {
+    SaleId INT PK
+    TransactionId INT FK
+    CustomerId INT FK
+    RegisterSessionId INT FK
+    SoldAt DATETIME2
+  }
+
+  SaleEntries {
+    SaleId INT PK, FK
+    ProductId INT PK, FK
+    Amount DECIMAL
+    Price SMALLMONEY
+    Discount DECIMAL
+    Total DECIMAL
+    Subtotal DECIMAL
+  }
+
+  Registers {
+    RegisterId INT PK
+    IsOpen BIT
+    CashierId INT FK
+  }
+
+  RegisterSessions {
+    RegisterSessionId INT PK
+    OpenedAt DATETIME2
+    ClosedAt DATETIME2
+    RegisterId INT FK
+    CashierId INT FK
+  }
+
+  Categories }o--|| Products : "Содержит"
+  Discounts }o--|| DiscountedProducts : "Включает"
+  Products }o--|| DiscountedProducts : "Является"
+  Organizations ||--o{ Shipments : "Поставляет"
+  Shipments }o--|| ShipmentEntries : "Включает"
+  Products }o--|| ShipmentEntries : "Является"
+  Sales |o--|| Customers : "Участвует"
+  Transactions |o--|| Sales : "Участвует"
+  Transactions |o--|| Shipments : "Участвует"
+  Sales }o--|| SaleEntries : "Включает"
+  Products }o--|| SaleEntries : "Является"
+  Registers }o--|| RegisterSessions : "Определяет"
+  Employees }o--|| Registers : "Использует"
+  Employees }o--|| RegisterSessions : "Использует"
+  Sales ||--o{ RegisterSessions : "Проводит"
